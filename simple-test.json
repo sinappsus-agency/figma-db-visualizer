@@ -1,0 +1,73 @@
+{
+  "type": "database",
+  "name": "SimpleTest",
+  "objects": [
+    {
+      "type": "table",
+      "name": "users",
+      "columns": [
+        {
+          "name": "id",
+          "type": "integer PRIMARY KEY"
+        },
+        {
+          "name": "name",
+          "type": "varchar(100) NOT NULL"
+        },
+        {
+          "name": "email",
+          "type": "varchar(255) NOT NULL"
+        }
+      ]
+    },
+    {
+      "type": "table", 
+      "name": "orders",
+      "columns": [
+        {
+          "name": "id",
+          "type": "integer PRIMARY KEY"
+        },
+        {
+          "name": "user_id",
+          "type": "integer NOT NULL"
+        },
+        {
+          "name": "total",
+          "type": "decimal(10,2) NOT NULL"
+        },
+        {
+          "name": "created_at",
+          "type": "datetime NOT NULL"
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "name": "products", 
+      "columns": [
+        {
+          "name": "id",
+          "type": "integer PRIMARY KEY"
+        },
+        {
+          "name": "name",
+          "type": "varchar(200) NOT NULL"
+        },
+        {
+          "name": "price",
+          "type": "decimal(10,2) NOT NULL"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "fromTable": "orders",
+      "fromColumn": "user_id", 
+      "toTable": "users",
+      "toColumn": "id",
+      "type": "foreign_key"
+    }
+  ]
+}
