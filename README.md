@@ -225,4 +225,4 @@ This project is open source. Feel free to modify and distribute.
 
 ---
 
-**Made with ❤️ for database designers and system architects**
+**Made with ❤️ for database designers and system architects that have to suffer Figma for the UX/UI team**
