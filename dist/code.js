@@ -97,9 +97,9 @@ figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
             for (const table of schema.tables) {
                 console.log('Creating frame for table:', table.name);
                 // Calculate dimensions
-                const tableWidth = 320;
+                const tableWidth = 450;
                 const headerHeight = 48;
-                const rowHeight = 32;
+                const rowHeight = 40;
                 const frameHeight = headerHeight + Math.max(1, table.columns.length) * rowHeight;
                 // Main table frame with rounded corners and shadow
                 const frame = figma.createFrame();
@@ -170,51 +170,62 @@ figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
                         rowBg.bottomRightRadius = 12;
                     }
                     frame.appendChild(rowBg);
-                    // Column name
+                    // Column name (left side)
                     const colName = figma.createText();
                     colName.characters = col.name;
                     colName.fontSize = 14;
                     colName.fontName = { family: "Inter", style: "Medium" };
                     colName.fills = [{ type: 'SOLID', color: { r: 0.15, g: 0.16, b: 0.21 } }];
                     colName.x = 20;
-                    colName.y = currentY + 8;
+                    colName.y = currentY + 12;
                     frame.appendChild(colName);
-                    // Column type
+                    // Column type (right side, with background)
                     const colType = figma.createText();
-                    const typeText = col.type.length > 25 ? col.type.substring(0, 25) + '...' : col.type;
+                    const typeText = col.type.length > 35 ? col.type.substring(0, 35) + '...' : col.type;
                     colType.characters = typeText;
                     colType.fontSize = 12;
                     colType.fontName = { family: "Inter", style: "Regular" };
                     colType.fills = [{ type: 'SOLID', color: { r: 0.5, g: 0.55, b: 0.65 } }];
-                    colType.x = 20;
-                    colType.y = currentY + 8 + 16;
+                    colType.x = 180;
+                    colType.y = currentY + 13;
                     frame.appendChild(colType);
+                    // Type background for better separation
+                    const typeBg = figma.createFrame();
+                    typeBg.resize(220, 24);
+                    typeBg.fills = [{
+                            type: 'SOLID',
+                            color: { r: 0.94, g: 0.95, b: 0.97 }
+                        }];
+                    typeBg.cornerRadius = 4;
+                    typeBg.x = 175;
+                    typeBg.y = currentY + 8;
+                    frame.insertChild(frame.children.length - 1, typeBg); // Insert before the text
                     // Primary key indicator
                     if (col.type.includes('PRIMARY KEY')) {
                         const keyIcon = figma.createFrame();
-                        keyIcon.resize(16, 16);
+                        keyIcon.resize(20, 20);
                         keyIcon.fills = [{ type: 'SOLID', color: { r: 1, g: 0.8, b: 0.2 } }];
-                        keyIcon.cornerRadius = 3;
-                        keyIcon.x = tableWidth - 36;
-                        keyIcon.y = currentY + 8;
+                        keyIcon.cornerRadius = 4;
+                        keyIcon.x = tableWidth - 45;
+                        keyIcon.y = currentY + 10;
                         const keyText = figma.createText();
                         keyText.characters = 'PK';
-                        keyText.fontSize = 8;
+                        keyText.fontSize = 9;
                         keyText.fontName = { family: "Inter", style: "Bold" };
                         keyText.fills = [{ type: 'SOLID', color: { r: 0.15, g: 0.16, b: 0.21 } }];
-                        keyText.x = tableWidth - 32;
-                        keyText.y = currentY + 10;
-                        frame.appendChild(keyText);
+                        keyText.x = tableWidth - 40;
+                        keyText.y = currentY + 15;
                         frame.appendChild(keyIcon);
+                        frame.appendChild(keyText);
                     }
                     // Not null indicator
-                    if (col.type.includes('NOT NULL') && !col.type.includes('PRIMARY KEY')) {
+                    else if (col.type.includes('NOT NULL')) {
                         const nnIcon = figma.createFrame();
-                        nnIcon.resize(12, 12);
+                        nnIcon.resize(14, 14);
                         nnIcon.fills = [{ type: 'SOLID', color: { r: 0.9, g: 0.3, b: 0.3 } }];
-                        nnIcon.cornerRadius = 6;
-                        nnIcon.x = tableWidth - 28;
-                        nnIcon.y = currentY + 10;
+                        nnIcon.cornerRadius = 7;
+                        nnIcon.x = tableWidth - 35;
+                        nnIcon.y = currentY + 13;
                         frame.appendChild(nnIcon);
                     }
                     // Row separator line (except for last row)
@@ -232,8 +243,8 @@ figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
                 figma.currentPage.appendChild(frame);
                 createdFrames.push(frame);
                 // Move to next position with better spacing
-                x += tableWidth + 40;
-                if (x > 1200) {
+                x += tableWidth + 50;
+                if (x > 1400) {
                     x = 0;
                     y += frameHeight + 60;
                 }
