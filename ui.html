@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DB Schema Visualizer</title>
+    <style>
+      body { background: #18191c; color: #fff; font-family: Inter, sans-serif; margin: 0; }
+      #root { padding: 24px; }
+      textarea, input[type="file"] { background: #23242a; color: #fff; border: none; border-radius: 6px; padding: 8px; margin-bottom: 12px; font-size: 14px; width: 100%; }
+      button { background: #2d8cff; color: #fff; border: none; border-radius: 6px; padding: 8px 16px; font-size: 15px; cursor: pointer; }
+      .error { color: #ff4d4f; margin-top: 8px; }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <h2>DB Schema Visualizer</h2>
+      <input type="file" id="fileInput" accept=".json,.sql" />
+      <textarea id="schemaInput" rows="10" placeholder="Paste JSON schema or SQL dump here..."></textarea>
+      <button id="drawBtn">Draw Schema</button>
+      <div id="error" class="error"></div>
+    </div>
+    <script>
+      const fileInput = document.getElementById('fileInput');
+      const schemaInput = document.getElementById('schemaInput');
+      const drawBtn = document.getElementById('drawBtn');
+      const errorDiv = document.getElementById('error');
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          schemaInput.value = evt.target.result;
+        };
+        reader.readAsText(file);
+      });
+      drawBtn.addEventListener('click', () => {
+        errorDiv.textContent = '';
+        try {
+          const value = schemaInput.value.trim();
+          parent.postMessage({ pluginMessage: { type: 'draw-schema', schema: value } }, '*');
+        } catch (e) {
+          errorDiv.textContent = 'Invalid input.';
+        }
+      });
+    </script>
+  </body>
+</html>
