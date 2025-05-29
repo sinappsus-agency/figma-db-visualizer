@@ -18,7 +18,7 @@ A powerful Figma plugin that transforms JSON schema files and database dumps int
 1. **Clone and Install Dependencies**
    ```powershell
    git clone <your-repo-url>
-   cd try2
+   cd <folder-name>
    npm install
    ```
 
